@@ -1,5 +1,13 @@
 {
   "pages": [
-    "pages/classic"
-  ]
+    "pages/classic/classic"
+  ],
+  "window": {
+    "navigationBarTitleText": "《 旧 岛 》",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "navigationStyle": "default",
+    "enablePullDownRefresh":false,
+    "backgroundColor": "#ffffff"
+  }
 }
