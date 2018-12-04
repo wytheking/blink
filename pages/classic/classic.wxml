@@ -20,4 +20,6 @@
       latest="{{latest}}" 
   />
 
+  <v-essay />
+
 </view>

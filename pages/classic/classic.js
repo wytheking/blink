@@ -43,14 +43,22 @@ Page({
    * 上一页
    */
   onLeft: function (event) {
-    console.log(event);  
+    
   },
 
   /**
    * 下一页
    */
   onRight: function (event) {
-    console.log(event);
+    let index = this.data.classicData.index;
+    console.log(index);
+    classicModel.getPrevious(index-1, (res) => {
+      console.log(res);
+      // 更新数据
+      this.setData({
+        classicData: res.data
+      })
+    }) 
   },
 
   /**
