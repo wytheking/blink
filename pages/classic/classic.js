@@ -12,8 +12,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    test: 1,
-    classicData: null
+    classicData: null,
+    latest: true,
+    first: false
   },
 
   /**
@@ -29,10 +30,27 @@ Page({
     })
   },
 
+  /**
+   * 点赞
+   */
   onLike: function (event) {
     console.log(event);
     let behavior = event.detail.behavior
     likeModel.like(behavior, this.data.classicData.id, this.data.classicData.type)
+  },
+
+  /**
+   * 上一页
+   */
+  onLeft: function (event) {
+    console.log(event);  
+  },
+
+  /**
+   * 下一页
+   */
+  onRight: function (event) {
+    console.log(event);
   },
 
   /**
