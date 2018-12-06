@@ -23,10 +23,13 @@ Page({
   onLoad: function (options) {  
     classicModel.getLatest((res) => {
       console.log(res)
-      // 数据更新
+      // 数据更新, 缓存数据--Storage
       this.setData({
         classicData: res.data
       })
+
+      // latestClassicData latestIndex     currentClassicData  currentIndex
+
     })
   },
 
@@ -40,23 +43,33 @@ Page({
   },
 
   /**
-   * 上一页
+   * 上一页(相当于下一期，排序是按最新一期在第一个)
    */
-  onLeft: function (event) {
-    
+  onNext: function (event) {
+    let index = this.data.classicData.index;
+    classicModel.getNext(index+1, (res) => {
+      console.log(res);
+      // 更新数据
+      this.setData({
+        classicData: res.data,
+        latest: classicModel.isLatest(res.data.index),
+        first: classicModel.isFirst(res.data.index)
+      })
+    }) 
   },
 
   /**
    * 下一页
    */
-  onRight: function (event) {
+  onPrevious: function (event) {
     let index = this.data.classicData.index;
-    console.log(index);
     classicModel.getPrevious(index-1, (res) => {
       console.log(res);
       // 更新数据
       this.setData({
-        classicData: res.data
+        classicData: res.data,
+        latest: classicModel.isLatest(res.data.index),
+        first: classicModel.isFirst(res.data.index)
       })
     }) 
   },
