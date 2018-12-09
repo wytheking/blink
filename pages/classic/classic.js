@@ -46,24 +46,24 @@ Page({
    * 上一页(相当于下一期，排序是按最新一期在第一个)
    */
   onNext: function (event) {
-    let index = this.data.classicData.index;
-    classicModel.getNext(index+1, (res) => {
-      console.log(res);
-      // 更新数据
-      this.setData({
-        classicData: res.data,
-        latest: classicModel.isLatest(res.data.index),
-        first: classicModel.isFirst(res.data.index)
-      })
-    }) 
+    // this._updataClassic('next');
+    this._updataClassic(+1);
   },
 
   /**
    * 下一页
    */
   onPrevious: function (event) {
+    // this._updataClassic('previous');
+    this._updataClassic(-1);
+  },
+
+  // （上一页、下一页） 公用方法
+  _updataClassic: function (nextOrPrevious) {
     let index = this.data.classicData.index;
-    classicModel.getPrevious(index-1, (res) => {
+    // classicModel.getClassic(index, nextOrPrevious, (res) => {
+    index = index + nextOrPrevious;
+    classicModel.getClassic(index, nextOrPrevious, (res) => {
       console.log(res);
       // 更新数据
       this.setData({
@@ -71,7 +71,7 @@ Page({
         latest: classicModel.isLatest(res.data.index),
         first: classicModel.isFirst(res.data.index)
       })
-    }) 
+    })
   },
 
   /**
