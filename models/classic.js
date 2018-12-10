@@ -27,7 +27,8 @@ class ClassicModel extends HTTP {
     let classic = wx.getStorageSync(key)
     if(!classic) {
       this.request({
-        // url: '/classic/'+index+'/' + nextOrPrevious,
+        // url: '/classic/'+index+'/'+nextOrPrevious,  // 普通写法
+        // url: `/classic/${index}/${nextOrPrevious}`,  // ES6模板字符串写法
         url: '/classic/index/previous/' + index,
         success: (res) => {
           wx.setStorageSync(this._getKey(res.data.index), res)

@@ -14,7 +14,9 @@ Page({
   data: {
     classicData: null,
     latest: true,
-    first: false
+    first: false,
+    likeCount: 0,
+    likeStatus: false
   },
 
   /**
@@ -22,10 +24,14 @@ Page({
    */
   onLoad: function (options) {  
     classicModel.getLatest((res) => {
-      console.log(res)
+      console.log(res);
+      this._getLikeStatus(res.data.id, res.data.type);
       // 数据更新, 缓存数据--Storage
       this.setData({
-        classicData: res.data
+        classicData: res.data,  // 普通写法
+        // ...res.data   // ES6扩展语法用法,这样在页面数据绑定时，就可以写变量名index，不用带classicData.index
+        likeStatus: res.data.like_status,
+        likeCount: res.data.fav_nums
       })
 
       // latestClassicData latestIndex     currentClassicData  currentIndex
@@ -58,21 +64,38 @@ Page({
     this._updataClassic(-1);
   },
 
-  // （上一页、下一页） 公用方法
+  /**
+   * （上一页、下一页） 公用方法
+   */
   _updataClassic: function (nextOrPrevious) {
     let index = this.data.classicData.index;
     // classicModel.getClassic(index, nextOrPrevious, (res) => {
     index = index + nextOrPrevious;
     classicModel.getClassic(index, nextOrPrevious, (res) => {
       console.log(res);
+      this._getLikeStatus(res.data.id, res.data.type),
       // 更新数据
       this.setData({
-        classicData: res.data,
+        classicData: res.data,  // 普通写法
         latest: classicModel.isLatest(res.data.index),
         first: classicModel.isFirst(res.data.index)
       })
     })
   },
+
+  /**
+   *  获取点赞信息的私有方法
+   */
+  _getLikeStatus: function (artId, category) {
+    likeModel.getClassicLikeStatus(artId, category,
+      (res) => {
+        this.setData({
+          likeStatus: res.data.like_status,
+          likeCount: res.data.fav_nums
+        })
+      })
+  },
+
 
   /**
    * 生命周期函数--监听页面初次渲染完成

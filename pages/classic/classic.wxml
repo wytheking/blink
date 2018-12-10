@@ -4,13 +4,17 @@
       <v-epsoide class="epsoide" index="{{classicData.index}}" />
       <v-like
           class="like"
-          like="{{classicData.like_status}}"
-          count="{{classicData.fav_nums}}"
+          like="{{likeStatus}}"
+          count="{{likeCount}}"
           bind:like="onLike"
       />
   </view>
 
-  <v-movie img="{{classicData.img}}" content="{{classicData.content}}" />
+  <v-movie
+      wx:if="{{true}}"
+      img="{{classicData.img}}"
+      content="{{classicData.content}}"
+  />
 
   <v-navi class="navi"
       bind:left="onNext"
