@@ -28,6 +28,6 @@
 
 .navi {
   position: absolute;
-  bottom: 100rpx;
+  bottom: 60rpx;
   flex-direction: center;
 }

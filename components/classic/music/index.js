@@ -7,7 +7,7 @@ const mMgr = wx.getBackgroundAudioManager();
 Component({
 
   behaviors: [classicBeh],
-
+  
   /**
    * 组件的属性列表
    */
@@ -27,11 +27,18 @@ Component({
   },
 
   /**
-   * 组件生命周期函数 detached 在组件移除的时候出发
+  * 组件生命周期函数 attached 在组件进入的时候触发
+  */
+  attached: function (event) {
+    this._recoverStatus();
+  },
+
+  /**
+   * 组件生命周期函数 detached 在组件移除的时候触发
    */
   detached:function(event) {
     // wx:if  hidden
-    mMgr.stop();
+    // mMgr.stop();
   },
 
   /**
@@ -51,8 +58,36 @@ Component({
           playing: false
         })
         mMgr.pause();
+      }     
+    },
+
+    _recoverStatus:function(){
+      if(mMgr.paused){
+        this.setData({
+          playing: false
+        })
+        return
       }
-      
+      if(mMgr.src == this.properties.src) {
+        this.setData({
+          playing: true
+        })
+      }
+    },
+
+    _monitorSwitch:function(){
+      mMgr.onPlay(() => {
+        this._recoverStatus()
+      })
+      mMgr.onPause(() => {
+        this._recoverStatus()
+      })
+      mMgr.onStop(() => {
+        this._recoverStatus()
+      })
+      mMgr.onEnded(() => {
+        this._recoverStatus()
+      })
     }
   }
 })
