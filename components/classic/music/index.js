@@ -29,14 +29,14 @@ Component({
   /**
   * 组件生命周期函数 attached 在组件进入的时候触发
   */
-  attached: function (event) {
+  attached(event) {
     this._recoverStatus();
   },
 
   /**
    * 组件生命周期函数 detached 在组件移除的时候触发
    */
-  detached:function(event) {
+  detached(event) {
     // wx:if  hidden
     // mMgr.stop();
   },

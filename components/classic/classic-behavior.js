@@ -2,7 +2,7 @@
  * Behavior 组件的行为  就是可复用的组件 公用的部分
  */
 
-let classicBeh = Behavior({
+const classicBeh = Behavior({
 
   /**
    * 组件的属性列表
