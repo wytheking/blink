@@ -34,6 +34,12 @@ Page({
           })
         }
       )
+    
+    // 通过传不同id 到详情
+    // wx.navigateTo({
+    //   id: this.data.id,
+    //   url: '/pages/book-detail/book-detail',
+    // })
 
     /* Promise 的错误的用法
     const hotList = bookModel.getHotList()
@@ -52,28 +58,27 @@ Page({
     )
     */
 
+    // Promise 对象  函数
+    // 对象  保存状态 函数
 
-      // Promise 对象  函数
-      // 对象  保存状态 函数
+    // 使用  Promise 第一步
+    // 异步代码 写在 Promise的函数中  第二步
+    /*
+    const promise = new Promise((resolve, reject) => {
+        // pending  fulfilled  rejected   三种状态
+        // 进行中    已成功      已失败
+        wx.getSystemInfo({ // 小程序获取 系统信息的API
+          success: res =>  resolve(res),
+          fail: error => reject(error)
+        })
+    })
 
-      // 使用  Promise 第一步
-      // 异步代码 写在 Promise的函数中  第二步
-      /*
-      const promise = new Promise((resolve, reject) => {
-          // pending  fulfilled  rejected   三种状态
-          // 进行中    已成功      已失败
-          wx.getSystemInfo({ // 小程序获取 系统信息的API
-            success: res =>  resolve(res),
-            fail: error => reject(error)
-          })
-      })
-
-      // 使用 promise 对象
-      promise.then(
-        res => console.log(res),
-        error => console.log(error)
-      )
-      */
+    // 使用 promise 对象
+    promise.then(
+      res => console.log(res),
+      error => console.log(error)
+    )
+    */
   },
 
   /**
