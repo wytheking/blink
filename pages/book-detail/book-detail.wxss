@@ -62,7 +62,7 @@
    text-indent: 58rpx; 
    font-weight: 300;
    /* font-family: PingFangSC; */
-   color:#222;
+   color:#333;
    line-height: 1.3rem;
 }
 

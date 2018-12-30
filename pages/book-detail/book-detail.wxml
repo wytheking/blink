@@ -1,4 +1,8 @@
 <!--pages/book-detail/book-detail.wxml-->
+
+<!-- 调用 wxs 文件 -->
+<wxs src="../../util/filter.wxs"  module="util" />
+
 <view class="container">
 
   <view class="head">
@@ -9,12 +13,12 @@
 
   <view class="sub-container">
     <text class="headline">短评</text>
-    <text class="shadow" wx:if="{{noComment}}">还没有短评</text>
+    <text class="shadow" wx:if="{{comments==false}}">还没有短评</text>
     <view class="comment-container">
-      <block wx:for="{{comments}}" wx:key="{{index}}">
+      <block wx:for="{{util.limit(comments,10)}}" wx:key="{{index}}">
         <v-tag
           class="tag"
-          tag-class="{{index==0?'ex-tag1':'' || index==1?'ex-tag2':''}}"
+          tag-class="{{tool.hightlight}}"
           text="{{item.content}}"
         >
           <text class="num" slot="after">{{'+' + item.nums}}</text>
@@ -25,7 +29,14 @@
 
   <view class="sub-container">
     <text class="headline">内容简介</text>
-    <text decode="{{true}}" class="content">{{book.summary}}</text>
+    <text decode="{{true}}" class="content">{{util.format(book.summary)}}</text>
+    <!-- <text>aaaaaaa\nbbbbbbbbbbbb</text> -->
+    <!-- text 标签可以自动解析换行 -->
+    <!-- wxml 编写js或者调用js，不可能 
+        但是新版小程序 可以 wxs  可以在wxml中调用js，也可以在wxml中写js 
+    -->
+
+
   </view>
 
   <view class="sub-container">
@@ -54,10 +65,48 @@
   <view class="post-fake" bind:tap="onFakePost">
     <text>输入短评</text>
   </view>
-   <view class="like-container">
-      <like-cmp bind:like="onLike" class="like" like="{{like}}" count="{{count}}" />
-      <img-btn-cmp class="share-btn" open-type="share">
-        <image class="share" slot="img" src="/images/icon/share.png" />
-      </img-btn-cmp>
-    </view>
+  <view class="like-container">
+    <v-like bind:like="onLike" class="like" like="{{likeStatus}}" count="{{likeCount}}" />
+    <img-btn-cmp class="share-btn" open-type="share">
+      <image class="share" slot="img" src="/images/icon/share.png" />
+    </img-btn-cmp>
+  </view>
 </view>
+
+<v-mask  wx:if="{{posting}}" />
+<view class='posting-container' wx:if="{{posting}}">
+  <view class='post-header'>
+    <text wx:if="{{comments==true}}">仅可点击标签+1</text>
+    <text class="shadow" wx:else>暂无短评</text>
+    <text bind:tap="onCancel" class='cancel'>取消</text>
+  </view>
+  <view class='comment-container'>
+    <block wx:for="{{util.limit(comments,3)}}" wx:key="{{index}}">
+        <v-tag
+          bind:tapping="onPost"
+          class="tag"
+          tag-class="{{tool.hightlight}}"
+          text="{{item.content}}"
+        >
+          <text class="num" slot="after">{{'+' + item.nums}}</text>
+        </v-tag>
+      </block>
+  </view>
+  <input bindconfirm='onPost' class='post' placeholder='短评最多12个字'></input>
+</view>
+
+<wxs module="tool">
+  var hightlight = function(index){
+    if(index == 0) {
+      return 'ex-tag'
+    }
+    if(index == 1) {
+      return 'ex-tag2'
+    }
+    return ''
+  }
+
+  module.exports = {
+    hightlight: hightlight
+  }
+</wxs>

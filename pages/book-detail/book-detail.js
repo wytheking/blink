@@ -1,8 +1,10 @@
 // pages/book-detail/book-detail.js
 
 import { BookModel } from '../../models/book.js'
+import { LikeModel } from '../../models/like.js'
 
 const bookModel = new BookModel()
+const likeModel = new LikeModel()
 
 Page({
 
@@ -13,7 +15,8 @@ Page({
     comments:[],
     book: null,
     likeStatus: false,
-    likeCount: 0
+    likeCount: 0,
+    posting: false
   },
 
   /**
@@ -52,6 +55,65 @@ Page({
         })
       }
     )
+  },
+
+  /**
+   * 书籍点赞
+   */
+  onLike(event) {
+    const like_or_cancel = event.detail.behavior
+    likeModel.like(like_or_cancel, this.data.book.id, 400)
+  },
+
+  /**
+   * 显示 隐藏 短评输入
+   */
+  onFakePost(event) {
+    this.setData({
+      posting:true
+    })
+  },
+  onCancel(event) {
+    this.setData({
+      posting: false
+    })
+  },
+
+  /**
+   * 点击tag标签，获取tag文本内容
+   */
+  onPost(event) {
+    const comment = event.detail.text || event.detail.value;
+    console.log(comment);
+
+    if (!comment) {
+      return
+    }
+    if(comment.length > 12) {
+      wx.showToast({
+        title: '短评最多12个字',
+        icon: 'none'
+      }) 
+      return   
+    }
+
+    bookModel.postComments(this.data.book.id, comment)
+      .then(res => {
+        wx.showTabBar({
+          title: '+ 1',
+          icon: 'none'
+        })
+
+        this.data.comments.unshift({
+          content:comment,
+          nums: 1
+        })
+
+        this.setData({
+          comment:this.data.comments,
+          posting: false
+        })
+      })
   },
 
   /**
