@@ -1,6 +1,7 @@
 // pages/book/book.js
 
 import { BookModel } from '../../models/book.js'
+import { random } from '../../util/common.js'
 
 let bookModel = new BookModel()
 
@@ -15,7 +16,9 @@ Page({
     // async  await  ES2017 小程序   不支持
     // 一次调用 多次调用服务器API  链式调用 3个API  API1 API2 API3
     // 
-    books: []
+    books: [],
+    searching:false,
+    more: 0
   },
 
   /**
@@ -120,7 +123,10 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    console.log('上拉加载！')
+    this.setData({
+      more: random(16)
+    })
   },
 
   /**
@@ -128,5 +134,24 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+  /**
+   * 点击搜索书籍事件
+   */
+  onSearching: function () {
+    this.setData({
+      searching: true
+    })
+  },
+  /**
+   * 点击取消事件
+   */
+  onCancel:function () {
+    this.setData({
+      searching: false
+    })
   }
+
+
 })

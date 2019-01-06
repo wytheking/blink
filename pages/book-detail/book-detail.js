@@ -23,6 +23,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.showLoading()
     // id  从其他page页面传过来的参数id  用 options.id 来接收
     const bid = options.bid
     console.log(bid)
@@ -31,30 +32,38 @@ Page({
     const comments = bookModel.getComments(bid)
     const liseStatus = bookModel.getLikeStatus(bid)
 
-    detail.then(
-      res => {
+    // Promise.race() 竞争 谁先完成，先执行谁
+    // 使用Promise.all() 合体 代替了一下三个promise回调
+    Promise.all([detail, comments, liseStatus])  
+      .then(res => {
+        console.log(res)
         this.setData({
-          book:res
+          book: res[0],
+          comments: res[1].comment,
+          likeStatus: res[2].like_status,
+          likeCount: res[2].fav_nums
         })
-      }
-    )
+        wx.hideLoading()
+      })
 
-    comments.then(
-      res => {
-        this.setData({
-          comments: res.comment
-        })
-      }
-    )
+    // detail.then(res => {
+    //   this.setData({
+    //     book:res
+    //   })
+    // })
 
-    liseStatus.then(
-      res => {
-        this.setData({
-          likeStatus: res.like_status,
-          likeCount: res.fav_nums
-        })
-      }
-    )
+    // comments.then(res => {
+    //   this.setData({
+    //     comments: res.comment
+    //   })
+    // })
+
+    // liseStatus.then(res => {
+    //   this.setData({
+    //     likeStatus: res.like_status,
+    //     likeCount: res.fav_nums
+    //   })
+    // })
   },
 
   /**
